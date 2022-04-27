@@ -1,5 +1,15 @@
-FROM nginx
+FROM alpine:3.14
 
-ADD docker/nginx/vhost.conf /etc/nginx/default.conf
+RUN apk add --update --no-cache nginx
 
-WORKDIR /var/www/html
+COPY nginx.conf /etc/nginx/
+COPY laravel.conf /etc/nginx/conf.d/
+
+RUN echo "upstream php-upstream { server php:9001; }" > /etc/nginx/conf.d/upstream.conf
+
+RUN adduser -D -g '' -G www-data www-data
+
+CMD ["nginx"]
+
+EXPOSE 80
+EXPOSE 443

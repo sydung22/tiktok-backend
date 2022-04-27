@@ -50,14 +50,14 @@ RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-set
 RUN adduser -u 1000 -G www-data -s /bin/sh -D www-data
 RUN groupmod -g 1000 www-data
 
-COPY /docker/php8-fpm/php.ini /etc/php8/conf.d/
-COPY /docker/php8-fpm/php.ini /etc/php8/cli/conf.d/
-COPY /docker/php8-fpm/xdebug.ini  /etc/php8/conf.d/
+COPY php.ini /etc/php8/conf.d/
+COPY php.ini /etc/php8/cli/conf.d/
+COPY xdebug.ini  /etc/php8/conf.d/
 
-COPY /docker/php8-fpm/www.conf /etc/php8/php-fpm.d/
+COPY www.conf /etc/php8/php-fpm.d/
 
-RUN mkdir -p /var/www
-RUN chown -R www-data:www-data /var/www
+RUN mkdir -p /var/www/html
+RUN chown -R www-data:www-data /var/www/html
 
 CMD ["php-fpm8", "-F"]
 
