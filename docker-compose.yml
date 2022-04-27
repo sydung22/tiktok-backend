@@ -4,6 +4,7 @@ services:
     build: docker/postgres
     environment:
       POSTGRES_ROOT_PASSWORD: root
+      POSTGRES_USERNAME: postgres
       POSTGRES_PASSWORD: hoanganh
       POSTGRES_DATABASE: tiktok_backend
     networks:
