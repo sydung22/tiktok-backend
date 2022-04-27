@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+  pgsql:
+    container_name: db
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    environment:
+      POSTGRES_ROOT_PASSWORD: root
+      POSTGRES_PASSWORD: hoanganh
+      POSTGRES_DATABASE: tiktok_backend
+    networks:
+      - db
+  php:
+    container_name: php-fpm
+    build:
+      context: .
+      dockerfile: docker/php8-fpm/Dockerfile
+    ports:
+      - 9000:9000
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+      - redis
+    networks:
+      - db
+      - php
+      - redis
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - php
+    networks:
+      - php
+    volumes:
+      - ./:/var/www/html
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - 6379:6379
+    networks:
+      - redis
+networks:
+  db:
+  php:
+  redis:
