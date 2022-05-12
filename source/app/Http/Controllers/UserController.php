@@ -2,32 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RegisterRequest;
-
 use Illuminate\Http\Request;
 use App\Models\User;
 
 class UserController extends Controller
 {
     //
-    public function register(RegisterRequest $request)
+    public function getUsers()
     {
-        $user = User::where('email', $request->email)->orWhere('username', $request->username);
-        if (!$user) {
-            $user = new User();
-            $user->username = $request->username;
-            $user->email = $request->email;
-            $user->fullname = $request->fullname;
-            $user->age = $request->age;
-            $user->gender = $request->gender;
-            $user->password = md5($request->password);
-            if ($user->save()) {
-                return response()->json([
-                    'success'   => true,
-                    'message'   => 'User created successfully',
-                    'data'      => $user
-                ]);
-            }
+        $users = User::all();
+        return response()->json([
+            'status' => 'success',
+            'user' => $users
+        ], 200);
+    }
+
+    public function getUserDetailById($id)
+    {
+        $user = User::with('videos')->withCount('videos')->find($id);
+        if ($user) {
+            return response()->json([
+                'status' => 'success',
+                'user' => $user
+            ], 200);
         }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
     }
 }

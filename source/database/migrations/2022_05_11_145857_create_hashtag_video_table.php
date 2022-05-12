@@ -14,10 +14,10 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('videos_hashtags', function (Blueprint $table) {
+        Schema::create('hashtag_video', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Video::class);
-            $table->foreignIdFor(Hashtag::class);
+            $table->foreignIdFor(HashTag::class);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('videos_hashtags');
+        Schema::dropIfExists('hashtag_video');
     }
 };

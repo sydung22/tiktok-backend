@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -134,22 +135,92 @@ class AuthController extends Controller
     public function changePassWord(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'old_password' => 'required|string|min:6',
-            'new_password' => 'required|string|confirmed|min:6',
+            'old_password' =>  [
+                'required', function ($attribute, $value, $fail) {
+                    if (!Hash::check($value, Auth::user()->password)) {
+                        $fail('Password is incorrect');
+                    }
+                },
+            ],
+            'new_password' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json(['status' => 'fail', 'errors' => $validator->errors()], 400);
         }
-        $userId = auth()->user()->id;
 
-        $user = User::where('id', $userId)->update(
+        $userId = auth()->user()->id;
+        if (User::where('id', $userId)->update(
             ['password' => bcrypt($request->new_password)]
-        );
+        )) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User successfully changed password',
+            ], 201);
+        }
 
         return response()->json([
-            'message' => 'User successfully changed password',
-            'user' => $user,
-        ], 201);
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'string|between:2,100',
+            'fullname' => 'string|between:2,100',
+            'age' => 'integer',
+            'gender' => 'string',
+            'avatar' => 'string',
+            'description' => 'string',
+            'facebook' => 'string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'errors' => $validator->errors()], 400);
+        }
+
+        $user = User::find(auth()->user()->id);
+        if (!empty($request->username)) {
+            $user->username = $request->username;
+        }
+        
+        if (!empty($request->fullname)) {
+            $user->fullname = $request->fullname;
+        }
+
+        if (!empty($request->age)) {
+            $user->age = $request->age;
+        }
+
+        if (!empty($request->description)) {
+            $user->description = $request->description;
+        }
+
+        if (!empty($request->facebook)) {
+            $user->facebook = $request->facebook;
+        }
+
+        if (!empty($request->gender)) {
+            $user->gender = $request->gender;
+        }
+
+        if (!empty($request->avatar)) {
+            $user->avatar = $request->avatar;
+        }
+
+        if ($user->save()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Update user successfully',
+                'user' => $user
+            ], 201);
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
     }
 }

@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VideoController;
+use App\Http\Controllers\HashtagController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +38,35 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
     Route::post('/change-pass', [AuthController::class, 'changePassWord']);
+    Route::post('/update-profile', [AuthController::class, 'updateProfile']);
+});
+
+Route::prefix('user')->group(function () {
+    Route::get('/', [UserController::class, 'getUsers']);
+    Route::get('/{id}', [UserController::class, 'getUserDetailById']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'video'
+], function () {
+    Route::post('/', [VideoController::class, 'storeVideo']);
+    Route::get('/', [VideoController::class, 'getVideosOfMe']);
+    Route::get('/{id}', [VideoController::class, 'getVideoDetailById']);
+    Route::get('/user/{id}', [VideoController::class, 'getVideosOfUser']);
+});
+
+Route::prefix('hashtag')->group(function () {
+    Route::get('/', [HashtagController::class, 'getHashtags']);
+    Route::post('/', [HashtagController::class, 'createHashtag']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'follow'
+], function () {
+    Route::post('/', [FollowController::class, 'follow']);
+});
+
+Route::prefix('admin')->group(function () {
 });
