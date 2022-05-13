@@ -10,15 +10,22 @@
 # Step Run Project
 
 ### Create Environment Docker
+```sh
 cp .env.example .env
+```
 
 ### Create Environment Source
+```dotenv
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=db_name
 DB_USERNAME=db_user
 DB_PASSWORD=db_password
+DB_ROOT_PASSWORD=secret
+```
 
 ### Run all migrations:
+```sh
 docker-compose run --rm artisan migrate
+```
