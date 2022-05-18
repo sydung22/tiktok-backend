@@ -28,8 +28,11 @@ class VideoController extends Controller
         }
 
         $video = new Video();
-        $video->url = $request->url;
-        $video->cover = $request->cover;
+        $uploadedVideoUrl = Cloudinary::uploadFile($request->file('video')->getRealPath())->getSecurePath();
+        $uploadedCoverUrl = Cloudinary::uploadFile($request->file('cover')->getRealPath())->getSecurePath();
+
+        $video->url = $uploadedVideoUrl;
+        $video->cover = $uploadedCoverUrl;
         if (!empty($request->description)) {
             $video->description = $request->description;
         }

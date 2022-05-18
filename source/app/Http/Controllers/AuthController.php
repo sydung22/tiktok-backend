@@ -206,8 +206,9 @@ class AuthController extends Controller
             $user->gender = $request->gender;
         }
 
-        if (!empty($request->avatar)) {
-            $user->avatar = $request->avatar;
+        if (!empty($request->file('avatar'))) {
+            $uploadedAvatarUrl = Cloudinary::uploadFile($request->file('avatar')->getRealPath())->getSecurePath();
+            $user->avatar = $uploadedAvatarUrl;
         }
 
         if ($user->save()) {
