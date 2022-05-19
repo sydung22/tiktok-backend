@@ -25,15 +25,24 @@ class FollowController extends Controller
         }
 
         if (auth()->user() && auth()->user()->id !== $request->user_id) {
-            $follow = new Follow();
-            $follow->user_id_1 = auth()->user()->id;
-            $follow->user_id_2 = $request->user_id;
-
-            if ($follow->save()) {
+            $follow = Follow::where('user_id_1', auth()->user()->id)->where('user_id_2', $request->user_id)->first();
+            if ($follow) {
+                $follow->delete();
                 return response()->json([
-                'status' => 'success',
-                'message' => 'Follow successfully',
-            ], 201);
+                    'status' => 'success',
+                    'message' => 'Unfollow successfully'
+                ], 200);
+            } else {
+                $follow = new Follow();
+                $follow->user_id_1 = auth()->user()->id;
+                $follow->user_id_2 = $request->user_id;
+    
+                if ($follow->save()) {
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Follow successfully',
+                    ], 201);
+                }
             }
         }
 

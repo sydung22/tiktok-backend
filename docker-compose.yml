@@ -67,6 +67,7 @@ services:
       PMA_HOST: mysql
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 2G
     restart: always
     depends_on:
       - mysql
@@ -74,6 +75,7 @@ services:
       - "8081:80"
     volumes:
       - /sessions
+      - ./app/config/php.ini:/usr/local/etc/php/php.ini
     networks:
       - laravel
     links:
@@ -88,6 +90,7 @@ services:
       - ./source:/var/www/html:delegated
       # Enable xdebug
       - ./compose/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./compose/php/php.ini:/usr/local/etc/php/conf.d/php.ini
     ports:
       - "9000:9000"
     networks:

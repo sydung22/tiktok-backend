@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->string('url');
             $table->string('description')->nullable();
             $table->integer('views')->default(0);
-            $table->double('time_view');
             $table->timestamps();
         });
     }

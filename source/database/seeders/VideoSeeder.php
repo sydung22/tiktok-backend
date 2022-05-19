@@ -21,9 +21,8 @@ class VideoSeeder extends Seeder
             $hashtags = array_rand(Hashtag::all()->pluck('id')->toArray(), 2);
             $video = Video::query()->create([
                 'user_id' => mt_rand(1, 10),
-                'url' => 'https://via.placeholder.com/150x150/'.substr(md5(rand()), 0, 6),
+                'url' => 'https://res.cloudinary.com/instagram-cloud-store/video/upload/v1652794585/imboa6ckspj4pbjjdnvn.mp4',
                 'cover' => 'https://via.placeholder.com/150x150/'.substr(md5(rand()), 0, 6),
-                'time_view' => mt_rand() / mt_getrandmax()
             ]);
             $video->hashtags()->syncWithoutDetaching($hashtags);
         }

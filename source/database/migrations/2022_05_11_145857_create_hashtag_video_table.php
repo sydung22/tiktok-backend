@@ -16,8 +16,8 @@ return new class extends Migration {
     {
         Schema::create('hashtag_video', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Video::class);
-            $table->foreignIdFor(HashTag::class);
+            $table->foreignIdFor(Video::class)->onDelete('cascade');
+            $table->foreignIdFor(HashTag::class)->onDelete('cascade');
             $table->timestamps();
         });
     }

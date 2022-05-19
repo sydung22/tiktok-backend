@@ -59,6 +59,7 @@ Route::group([
 Route::prefix('hashtag')->group(function () {
     Route::get('/', [HashtagController::class, 'getHashtags']);
     Route::post('/', [HashtagController::class, 'createHashtag']);
+    Route::delete('{id}', [HashtagController::class, 'deleteHashtag']);
 });
 
 Route::group([

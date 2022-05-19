@@ -207,7 +207,7 @@ class AuthController extends Controller
         }
 
         if (!empty($request->file('avatar'))) {
-            $uploadedAvatarUrl = Cloudinary::uploadFile($request->file('avatar')->getRealPath())->getSecurePath();
+            $uploadedAvatarUrl = cloudinary()->uploadFile($request->file('avatar')->getRealPath())->getSecurePath();
             $user->avatar = $uploadedAvatarUrl;
         }
 

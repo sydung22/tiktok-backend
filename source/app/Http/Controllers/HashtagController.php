@@ -48,4 +48,23 @@ class HashtagController extends Controller
             'hashtag' => $hashtags
         ], 200);
     }
+
+    public function deleteHashtag($id)
+    {
+        $user = auth()->user();
+        if ($user->role) {
+            $hashtag = Hashtag::find($id);
+            if ($hashtag->delete() && $hashtag->videos()->detach()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Delete hashtag successfully'
+                ], 200);
+            }
+        }
+        
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
+    }
 }

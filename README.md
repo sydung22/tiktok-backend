@@ -25,7 +25,14 @@ DB_PASSWORD=db_password
 DB_ROOT_PASSWORD=secret
 ```
 
+### Run projects
+```sh
+docker-compose up --build
+docker-compose run --rm artisan key:generate
+docker-compose run --rm artisan jwt:secret
+```
+
 ### Run all migrations:
 ```sh
-docker-compose run --rm artisan migrate
+docker-compose run --rm artisan migrate --seed
 ```

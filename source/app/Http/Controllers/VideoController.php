@@ -17,27 +17,16 @@ class VideoController extends Controller
     //
     public function storeVideo(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'url' => 'required|string',
-            'cover' => 'required|string',
-            'time_view' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'fail', 'errors' => $validator->errors()], 400);
-        }
-
         $video = new Video();
-        $uploadedVideoUrl = Cloudinary::uploadFile($request->file('video')->getRealPath())->getSecurePath();
-        $uploadedCoverUrl = Cloudinary::uploadFile($request->file('cover')->getRealPath())->getSecurePath();
+        $uploadedVideoUrl = cloudinary()->uploadFile($request->file('video')->getRealPath())->getSecurePath();
+        $uploadedCoverUrl = cloudinary()->uploadFile($request->file('cover')->getRealPath())->getSecurePath();
 
         $video->url = $uploadedVideoUrl;
         $video->cover = $uploadedCoverUrl;
         if (!empty($request->description)) {
             $video->description = $request->description;
         }
-
-        $video->time_view = $request->time_view;
+        
         $video->user_id = auth()->user()->id;
 
         $video->save();
