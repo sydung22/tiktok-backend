@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\HashtagController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,14 @@ Route::group([
     Route::get('/', [VideoController::class, 'getVideosOfMe']);
     Route::get('/{id}', [VideoController::class, 'getVideoDetailById']);
     Route::get('/user/{id}', [VideoController::class, 'getVideosOfUser']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'comment'
+], function () {
+    Route::post('/', [CommentController::class, 'createComment']);
+    Route::get('/', [CommentController::class, 'getComments']);
 });
 
 Route::prefix('hashtag')->group(function () {
