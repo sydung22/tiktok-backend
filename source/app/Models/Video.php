@@ -11,6 +11,7 @@ class Video extends Model
     protected $fillable = ['url', 'cover', 'description', 'views', 'user_id'];
 
     protected $with = ['user', 'hashtags'];
+    protected $withCount = ['likes'];
 
     public function user()
     {

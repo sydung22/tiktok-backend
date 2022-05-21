@@ -8,6 +8,8 @@ use App\Http\Controllers\VideoController;
 use App\Http\Controllers\HashtagController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\ReplyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +46,7 @@ Route::group([
 
 Route::prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
-    Route::get('/{id}', [UserController::class, 'getUserDetailById']);
+    Route::get('{id}', [UserController::class, 'getUserDetailById']);
 });
 
 Route::group([
@@ -53,7 +55,7 @@ Route::group([
 ], function () {
     Route::post('/', [VideoController::class, 'storeVideo']);
     Route::get('/', [VideoController::class, 'getVideosOfMe']);
-    Route::get('/{id}', [VideoController::class, 'getVideoDetailById']);
+    Route::get('{id}', [VideoController::class, 'getVideoDetailById']);
     Route::get('/user/{id}', [VideoController::class, 'getVideosOfUser']);
 });
 
@@ -65,10 +67,18 @@ Route::group([
     Route::get('/', [CommentController::class, 'getComments']);
 });
 
-Route::prefix('hashtag')->group(function () {
-    Route::get('/', [HashtagController::class, 'getHashtags']);
-    Route::post('/', [HashtagController::class, 'createHashtag']);
-    Route::delete('{id}', [HashtagController::class, 'deleteHashtag']);
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'reply'
+], function () {
+    Route::post('/', [ReplyController::class, 'createReplyComment']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'like'
+], function () {
+    Route::post('/', [LikeController::class, 'like']);
 });
 
 Route::group([
@@ -76,6 +86,12 @@ Route::group([
     'prefix' => 'follow'
 ], function () {
     Route::post('/', [FollowController::class, 'follow']);
+});
+
+Route::prefix('hashtag')->group(function () {
+    Route::get('/', [HashtagController::class, 'getHashtags']);
+    Route::post('/', [HashtagController::class, 'createHashtag']);
+    Route::delete('{id}', [HashtagController::class, 'deleteHashtag']);
 });
 
 Route::prefix('admin')->group(function () {

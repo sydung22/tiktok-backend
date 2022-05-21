@@ -85,6 +85,8 @@ class VideoController extends Controller
     public function getVideoDetailById($id)
     {
         $video = Video::find($id);
+        $video->views++;
+        $video->save();
         return response()->json([
             'status' => 'success',
             'video' => $video
