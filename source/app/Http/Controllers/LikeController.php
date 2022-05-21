@@ -32,22 +32,83 @@ class LikeController extends Controller
         $like->user_id = auth()->user()->id;
 
         if ($request->video_id) {
-            $like->likeable_id = $request->video_id;
-            $like->likeable_type = Video::class;
-        } elseif ($request->comment_id) {
-            $like->likeable_id = $request->comment_id;
-            $like->likeable_type = Comment::class;
-        } else {
-            $like->likeable_id = $request->reply_id;
-            $like->likeable_type = Reply::class;
-        }
+            $like = Like::where([
+                'user_id' => auth()->user()->id,
+                'likeable_id' => $request->video_id,
+                'likeable_type' => Video::class
+            ])->first();
 
-        if ($like->save()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Create like successfully',
-                'user' => $like
-            ], 201);
+            if ($like) {
+                $like->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Unlike successfully'
+                ], 200);
+            } else {
+                $like = new Like;
+                $like->likeable_id = $request->video_id;
+                $like->likeable_type = Video::class;
+                $like->user_id = auth()->user()->id;
+                if ($like->save()) {
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Create like successfully',
+                        'user' => $like
+                    ], 201);
+                }
+            }
+        } elseif ($request->comment_id) {
+            $like = Like::where([
+                'user_id' => auth()->user()->id,
+                'likeable_id' => $request->comment_id,
+                'likeable_type' => Comment::class
+            ])->first();
+
+            if ($like) {
+                $like->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Unlike successfully'
+                ], 200);
+            } else {
+                $like = new Like;
+                $like->likeable_id = $request->comment_id;
+                $like->likeable_type = Comment::class;
+                $like->user_id = auth()->user()->id;
+                if ($like->save()) {
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Create like successfully',
+                        'user' => $like
+                    ], 201);
+                }
+            }
+        } else {
+            $like = Like::where([
+                'user_id' => auth()->user()->id,
+                'likeable_id' => $request->reply_id,
+                'likeable_type' => Reply::class
+            ])->first();
+
+            if ($like) {
+                $like->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Unlike successfully'
+                ], 200);
+            } else {
+                $like = new Like;
+                $like->likeable_id = $request->reply_id;
+                $like->likeable_type = Reply::class;
+                $like->user_id = auth()->user()->id;
+                if ($like->save()) {
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Create like successfully',
+                        'user' => $like
+                    ], 201);
+                }
+            }
         }
 
         return response()->json([
