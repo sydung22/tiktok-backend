@@ -36,3 +36,6 @@ docker-compose run --rm artisan jwt:secret
 ```sh
 docker-compose run --rm artisan migrate --seed
 ```
+
+### Docs postman api
+https://documenter.getpostman.com/view/13861728/UyxnD4nA

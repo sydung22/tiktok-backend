@@ -10,7 +10,7 @@ class Video extends Model
     use HasFactory;
     protected $fillable = ['url', 'cover', 'description', 'views', 'user_id'];
 
-    protected $with = ['user', 'hashtags'];
+    protected $with = ['user', 'hashtags', 'comments'];
     protected $withCount = ['likes'];
 
     public function user()

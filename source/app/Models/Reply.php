@@ -20,4 +20,9 @@ class Reply extends Model
     {
         return $this->belongsTo(Comment::class);
     }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
 }

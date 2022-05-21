@@ -10,7 +10,7 @@ class ReplyController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => []]);
+        $this->middleware('auth:api', ['except' => ['getRepliesComment']]);
     }
     //
     public function createReplyComment(Request $request)
@@ -41,5 +41,15 @@ class ReplyController extends Controller
             'status' => 'fail',
             'message' => 'Service Error'
         ], 400);
+    }
+
+    public function getRepliesComment(Request $request)
+    {
+        $replies = Reply::where('comment_id', $request->query('comment_id'))->get();
+        return response()->json([
+            'status' => 'success',
+            'replies' => $replies,
+            'replies_count' => $replies->count()
+        ], 200);
     }
 }

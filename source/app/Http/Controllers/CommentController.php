@@ -10,7 +10,7 @@ class CommentController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => []]);
+        $this->middleware('auth:api', ['except' => ['getComments']]);
     }
     //
     public function createComment(Request $request)
@@ -47,7 +47,7 @@ class CommentController extends Controller
         $comments = Comment::where('video_id', $request->query('video_id'))->get();
         return response()->json([
             'status' => 'success',
-            'comment' => $comments,
+            'comments' => $comments,
             'comments_count' => $comments->count()
         ], 200);
     }

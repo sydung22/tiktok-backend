@@ -10,6 +10,7 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,7 @@ Route::group([
     'prefix' => 'reply'
 ], function () {
     Route::post('/', [ReplyController::class, 'createReplyComment']);
+    Route::get('/', [ReplyController::class, 'getRepliesComment']);
 });
 
 Route::group([
@@ -86,6 +88,14 @@ Route::group([
     'prefix' => 'follow'
 ], function () {
     Route::post('/', [FollowController::class, 'follow']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'report'
+], function () {
+    Route::post('/', [ReportController::class, 'reportVideo']);
+    Route::get('/', [ReportController::class, 'getReports']);
 });
 
 Route::prefix('hashtag')->group(function () {
