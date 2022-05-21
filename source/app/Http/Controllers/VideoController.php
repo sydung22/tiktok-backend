@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Video;
 use App\Models\Follow;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class VideoController extends Controller
 {
@@ -18,11 +18,20 @@ class VideoController extends Controller
     public function storeVideo(Request $request)
     {
         $video = new Video();
-        $uploadedVideoUrl = cloudinary()->uploadFile($request->file('video')->getRealPath())->getSecurePath();
-        $uploadedCoverUrl = cloudinary()->uploadFile($request->file('cover')->getRealPath())->getSecurePath();
+        $uploadedCoverUrl = '';
+        $uploadedVideoUrl = '';
+        if ($request->file('video')) {
+            $uploadedVideoUrl = $request->file('video')->getRealPath();
+        }
+        
+        if ($request->file('cover')) {
+            $uploadedCoverUrl = $request->file('cover')->getRealPath();
+        }
 
-        $video->url = $uploadedVideoUrl;
-        $video->cover = $uploadedCoverUrl;
+        if (!empty($uploadedCoverUrl) && !empty($uploadedVideoUrl)) {
+            $video->url = cloudinary()->uploadFile($uploadedVideoUrl)->getSecurePath();
+            $video->cover = cloudinary()->uploadFile($uploadedCoverUrl)->getSecurePath();
+        }
         if (!empty($request->description)) {
             $video->description = $request->description;
         }
@@ -34,6 +43,8 @@ class VideoController extends Controller
         if (!empty($request->hashtags)) {
             $video->hashtags()->syncWithoutDetaching($request->hashtags);
         }
+
+        DB::select("CALL handle_action('UPLOAD', ?)", [auth()->user()->id]);
 
         return response()->json([
             'status' => 'success',
