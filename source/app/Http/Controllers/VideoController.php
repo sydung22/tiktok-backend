@@ -44,8 +44,6 @@ class VideoController extends Controller
             $video->hashtags()->syncWithoutDetaching($request->hashtags);
         }
 
-        DB::select("CALL handle_action('UPLOAD', ?)", [auth()->user()->id]);
-
         return response()->json([
             'status' => 'success',
             'message' => 'Uploaded video successfully',
@@ -102,5 +100,9 @@ class VideoController extends Controller
             'status' => 'success',
             'video' => $video
         ], 200);
+    }
+
+    public function deleteVideo($id)
+    {
     }
 }
