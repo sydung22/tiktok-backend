@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->integer('age');
             $table->string('gender', 20);
-            $table->string('avatar')->default('https://res.cloudinary.com/instagram-cloud-store/image/upload/v1652163613/45851733_hxmlsc.png');
+            $table->string('avatar')->default('https://res.cloudinary.com/dswt194ko/image/upload/v1653585639/imageUser/ymkiylplmquaphd6nrxq.jpg');
             $table->string('description')->nullable();
             $table->string('facebook')->nullable();
             $table->integer('role')->default(0);
