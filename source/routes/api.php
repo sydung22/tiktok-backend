@@ -55,10 +55,12 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'video'
 ], function () {
-    Route::post('/', [VideoController::class, 'storeVideo']);
+    Route::post('/store-url', [VideoController::class, 'storeVideoUrl']);
+    Route::post('/save-video', [VideoController::class, 'storeVideo']);
     Route::get('/', [VideoController::class, 'getVideosOfMe']);
+    Route::get('/params', [VideoController::class, 'getVideosByParams']);
+    Route::get('/liked', [VideoController::class, 'getVideosLiked']);
     Route::get('{id}', [VideoController::class, 'getVideoDetailById']);
-    Route::get('/user/{id}', [VideoController::class, 'getVideosOfUser']);
 });
 
 Route::group([
@@ -82,6 +84,7 @@ Route::group([
     'prefix' => 'like'
 ], function () {
     Route::post('/', [LikeController::class, 'like']);
+    Route::post('/checked', [LikeController::class, 'checkHasLike']);
 });
 
 Route::group([

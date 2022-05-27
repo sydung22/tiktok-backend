@@ -19,7 +19,7 @@ class UserController extends Controller
 
     public function getUserDetailById($id)
     {
-        $user = User::with('videos')->withCount('videos')->find($id);
+        $user = User::with('videos', 'followings', 'followers')->withCount('videos', 'followings', 'followers')->find($id);
         if ($user) {
             return response()->json([
                 'status' => 'success',

@@ -6,38 +6,38 @@ use App\Models\Video;
 use App\Models\Follow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class VideoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['getVideos', 'getVideosOfUser', 'getVideoDetailById']]);
+        $this->middleware('auth:api', ['except' => ['getVideosOfUser', 'getVideoDetailById', 'getVideosByParams', 'storeVideoUrl']]);
     }
 
     //
     public function storeVideo(Request $request)
     {
-        $video = new Video();
-        $uploadedCoverUrl = '';
-        $uploadedVideoUrl = '';
-        if ($request->file('video')) {
-            $uploadedVideoUrl = $request->file('video')->getRealPath();
-        }
-        
-        if ($request->file('cover')) {
-            $uploadedCoverUrl = $request->file('cover')->getRealPath();
+        $validator = Validator::make($request->all(), [
+            'video_url' => 'required',
+            'video_cover_url' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'errors' => $validator->errors()], 400);
         }
 
-        if (!empty($uploadedCoverUrl) && !empty($uploadedVideoUrl)) {
-            $video->url = cloudinary()->uploadFile($uploadedVideoUrl)->getSecurePath();
-            $video->cover = cloudinary()->uploadFile($uploadedCoverUrl)->getSecurePath();
-        }
+        $video = new Video();
+
+        $video->url = $request->video_url;
+        $video->cover = $request->video_cover_url;
+        $video->user_id = auth()->user()->id;
+
+        
         if (!empty($request->description)) {
             $video->description = $request->description;
         }
         
-        $video->user_id = auth()->user()->id;
-
         $video->save();
 
         if (!empty($request->hashtags)) {
@@ -46,8 +46,18 @@ class VideoController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Uploaded video successfully',
+            'message' => 'Saved video successfully',
             'video' => $video,
+        ], 200);
+    }
+
+    public function storeVideoUrl(Request $request)
+    {
+        $uploadedFileUrl = cloudinary()->uploadFile($request->file('video')->getRealPath())->getSecurePath();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Uploaded video successfully',
+            'video_url' => $uploadedFileUrl,
         ], 200);
     }
 
@@ -81,13 +91,26 @@ class VideoController extends Controller
         }
     }
 
-    public function getVideosOfUser($id)
+    public function getVideosByParams(Request $request)
     {
-        $videos = Video::where('user_id', $id)->get();
+        $userId = $request->input('user_id');
+        $hashtags = $request->input('hashtag');
 
+        $videos = [];
+
+        if ($userId) {
+            $videos = Video::where('user_id', $userId)->get();
+        }
+
+        if ($hashtags) {
+            $videos = Video::whereHas('hashtags', function ($query) use ($hashtags) {
+                $query->whereIn('hashtags.id', $hashtags);
+            })->get();
+        }
+       
         return response()->json([
             'status' => 'success',
-            'video' => $videos
+            'videos' => $videos
         ], 200);
     }
 
@@ -99,6 +122,21 @@ class VideoController extends Controller
         return response()->json([
             'status' => 'success',
             'video' => $video
+        ], 200);
+    }
+
+    public function getVideosLiked()
+    {
+        $userId = auth()->user()->id;
+        $videos = DB::table('likes')
+            ->join('videos', 'likes.likeable_id', '=', 'videos.id')
+            ->where('likes.likeable_type', 'App\Models\Video')
+            ->where('likes.user_id', $userId)
+            ->select('videos.*')
+            ->get();
+        return response()->json([
+            'status' => 'success',
+            'videos' => $videos
         ], 200);
     }
 

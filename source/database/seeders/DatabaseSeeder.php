@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             VideoSeeder::class,
             RuleCoinSeeder::class,
+            FollowSeeder::class,
+            LikeSeeder::class,
+            CommentSeeder::class,
         ]);
     }
 }

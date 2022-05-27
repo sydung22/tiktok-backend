@@ -13,7 +13,7 @@ class LikeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => []]);
+        $this->middleware('auth:api', ['except' => ['checkHasLike']]);
     }
     //
     public function like(Request $request)
@@ -115,5 +115,25 @@ class LikeController extends Controller
             'status' => 'fail',
             'message' => 'Service Error'
         ], 400);
+    }
+
+    public function checkHasLike(Request $request)
+    {
+        $result = Like::where('user_id', $request->user_id)
+            ->where('likeable_id', $request->likeable_id)
+            ->where('likeable_type', $request->likeable_type)
+            ->first();
+        
+        if ($result) {
+            return response()->json([
+                'status' => 'success',
+                'message' => true,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 'success',
+                'message' => false,
+            ], 200);
+        }
     }
 }

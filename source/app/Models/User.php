@@ -70,9 +70,14 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Video::class);
     }
 
-    public function follows()
+    public function followings()
     {
-        return $this->hasMany(User::class, 'follows', 'user_id_1', 'id');
+        return $this->hasMany(Follow::class, 'user_id_1', 'id');
+    }
+
+    public function followers()
+    {
+        return $this->hasMany(Follow::class, 'user_id_2', 'id');
     }
 
     public function reports()
