@@ -77,7 +77,6 @@ Route::group([
     'prefix' => 'reply'
 ], function () {
     Route::post('/', [ReplyController::class, 'createReplyComment']);
-    Route::get('/', [ReplyController::class, 'getRepliesComment']);
 });
 
 Route::group([
@@ -85,7 +84,6 @@ Route::group([
     'prefix' => 'like'
 ], function () {
     Route::post('/', [LikeController::class, 'like']);
-    Route::post('/checked', [LikeController::class, 'checkHasLike']);
 });
 
 Route::group([
