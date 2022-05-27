@@ -12,7 +12,7 @@ class VideoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['getVideosOfUser', 'getVideoDetailById', 'getVideosByParams', 'storeVideoUrl']]);
+        $this->middleware('auth:api', ['except' => ['getAllVideos', 'getVideoDetailById', 'getVideosByParams', 'storeVideoUrl']]);
     }
 
     //
@@ -137,6 +137,16 @@ class VideoController extends Controller
         return response()->json([
             'status' => 'success',
             'videos' => $videos
+        ], 200);
+    }
+
+    public function getAllVideos()
+    {
+        $videos = Video::all();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Get videos successfully',
+            'videos' => $videos,
         ], 200);
     }
 

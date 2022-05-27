@@ -57,7 +57,8 @@ Route::group([
 ], function () {
     Route::post('/store-url', [VideoController::class, 'storeVideoUrl']);
     Route::post('/save-video', [VideoController::class, 'storeVideo']);
-    Route::get('/', [VideoController::class, 'getVideosOfMe']);
+    Route::get('/me', [VideoController::class, 'getVideosOfMe']);
+    Route::get('/', [VideoController::class, 'getAllVideos']);
     Route::get('/params', [VideoController::class, 'getVideosByParams']);
     Route::get('/liked', [VideoController::class, 'getVideosLiked']);
     Route::get('{id}', [VideoController::class, 'getVideoDetailById']);
