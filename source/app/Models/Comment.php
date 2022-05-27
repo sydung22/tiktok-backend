@@ -9,7 +9,7 @@ class Comment extends Model
 {
     use HasFactory;
     protected $fillable = ['content', 'user_id', 'video_id'];
-    protected $with = ['replies', 'user'];
+    protected $with = ['replies', 'user', 'likes'];
     protected $withCount = ['likes'];
 
     public function user()

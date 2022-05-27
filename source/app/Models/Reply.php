@@ -10,7 +10,7 @@ class Reply extends Model
     use HasFactory;
     protected $fillable = ['content', 'user_id', 'comment_id'];
 
-    protected $with = ['user'];
+    protected $with = ['user', 'likes'];
     protected $withCount = ['likes'];
 
     public function user()
