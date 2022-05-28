@@ -49,6 +49,7 @@ Route::group([
 Route::prefix('user')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
     Route::get('{id}', [UserController::class, 'getUserDetailById']);
+    Route::delete('{id}', [UserController::class, 'deleteUser']);
 });
 
 Route::group([

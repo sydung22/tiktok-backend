@@ -13,12 +13,13 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('videos', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id');
+            $table->increments('id')->unsigned();
             $table->string('cover');
             $table->string('url');
             $table->string('description')->nullable();
             $table->integer('views')->default(0);
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

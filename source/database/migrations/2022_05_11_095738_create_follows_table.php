@@ -14,8 +14,10 @@ return new class extends Migration {
     {
         Schema::create('follows', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id_1');
-            $table->integer('user_id_2');
+            $table->integer('user_id_1')->unsigned();
+            $table->foreign('user_id_1')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('user_id_2')->unsigned();
+            $table->foreign('user_id_2')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

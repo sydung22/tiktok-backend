@@ -32,4 +32,23 @@ class UserController extends Controller
             'message' => 'Service Error'
         ], 400);
     }
+
+    public function deleteUser($id)
+    {
+        if (auth()->user() && auth()->user()->role == 1 && auth()->user()->id !== (int) $id) {
+            $user = User::find($id);
+            if ($user) {
+                $user->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Delete user successfully'
+                ], 200);
+            }
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
+    }
 }
