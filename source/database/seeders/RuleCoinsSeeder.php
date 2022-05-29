@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class RuleCoinSeeder extends Seeder
+class RuleCoinsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,7 +21,7 @@ class RuleCoinSeeder extends Seeder
             [
                 'code' => "UPLOAD",
                 'quota' => 1,
-                'amount' => 10,
+                'amount' => 5,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
@@ -34,15 +34,22 @@ class RuleCoinSeeder extends Seeder
             ],
             [
                 'code' => "COMMENT",
-                'quota' => 1,
-                'amount' => 5,
+                'quota' => 5,
+                'amount' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
                 'code' => "LIKE",
-                'quota' => 2,
-                'amount' => 5,
+                'quota' => 5,
+                'amount' => 1,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'code' => "FOLLOW",
+                'quota' => 5,
+                'amount' => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

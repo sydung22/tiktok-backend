@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->string('description')->nullable();
             $table->string('facebook')->nullable();
             $table->integer('role')->default(0);
-            $table->integer('coin')->default(0);
+            $table->integer('coins')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

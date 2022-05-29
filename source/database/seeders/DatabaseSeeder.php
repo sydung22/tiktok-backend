@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         Hashtag::factory(10)->create();
         $this->call([
             VideoSeeder::class,
-            RuleCoinSeeder::class,
+            RuleCoinsSeeder::class,
             FollowSeeder::class,
             LikeSeeder::class,
             CommentSeeder::class,

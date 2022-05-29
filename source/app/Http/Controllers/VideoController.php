@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Video;
 use App\Models\Follow;
+use App\Models\Hashtag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -41,7 +42,19 @@ class VideoController extends Controller
         $video->save();
 
         if (!empty($request->hashtags)) {
-            $video->hashtags()->syncWithoutDetaching($request->hashtags);
+            $hashtagIds = [];
+            foreach ($request->hashtags as $field => $value) {
+                $hashtag = Hashtag::where('name', $value)->first();
+                if ($hashtag) {
+                    $hashtagIds[] = $hashtag->id;
+                } else {
+                    $hashtag = new Hashtag();
+                    $hashtag->name = $value;
+                    $hashtag->save();
+                    $hashtagIds[] = $hashtag->id;
+                }
+            }
+            $video->hashtags()->syncWithoutDetaching($hashtagIds);
         }
 
         return response()->json([
@@ -151,6 +164,37 @@ class VideoController extends Controller
     }
 
     public function deleteVideo($id)
+    {
+        $video = Video::find($id);
+        if (auth()->user()) {
+            if (auth()->user()->role === 1 && auth()->user()->id !== $video->user_id) {
+                $video->delete();
+                DB::select("CALL handle_video_report_delete_action('REPORT', ?)", [$video->user_id]);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Deleted video successfully',
+                ], 200);
+            } elseif (auth()->user()->id == $video->user_id) {
+                $video->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Deleted video successfully',
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'You are not authorized to delete this video'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'You are not authorized to delete this video',
+            ], 400);
+        }
+    }
+
+    public function editVideo($id)
     {
     }
 }

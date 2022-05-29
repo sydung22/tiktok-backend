@@ -51,4 +51,21 @@ class CommentController extends Controller
             'comments_count' => $comments->count()
         ], 200);
     }
+
+    public function deleteComment($id)
+    {
+        $comment = Comment::find($id);
+        if (auth()->user() && auth()->user()->id === $comment->user_id) {
+            $comment->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Delete comment successfully'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
+    }
 }

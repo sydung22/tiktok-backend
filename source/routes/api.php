@@ -12,6 +12,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,7 @@ Route::group([
     Route::get('/params', [VideoController::class, 'getVideosByParams']);
     Route::get('/liked', [VideoController::class, 'getVideosLiked']);
     Route::get('{id}', [VideoController::class, 'getVideoDetailById']);
+    Route::delete('{id}', [VideoController::class, 'deleteVideo']);
 });
 
 Route::group([
@@ -71,6 +73,7 @@ Route::group([
 ], function () {
     Route::post('/', [CommentController::class, 'createComment']);
     Route::get('/', [CommentController::class, 'getComments']);
+    Route::delete('{id}', [CommentController::class, 'deleteComment']);
 });
 
 Route::group([
@@ -113,4 +116,5 @@ Route::prefix('search')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'getStatistics']);
 });
