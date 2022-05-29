@@ -194,7 +194,61 @@ class VideoController extends Controller
         }
     }
 
-    public function editVideo($id)
+    public function editVideo($id, Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'video_url' => 'string',
+            'video_cover_url' => 'string',
+            'description' => 'string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'errors' => $validator->errors()], 400);
+        }
+
+        $video = Video::find($id);
+
+        if (auth()->user() && auth()->user()->id === $video->user_id) {
+            if (!empty($request->video_url)) {
+                $video->url = $request->video_url;
+            }
+            
+            if (!empty($request->video_cover_url)) {
+                $video->cover = $request->video_cover_url;
+            }
+    
+            if (!empty($request->description)) {
+                $video->description = $request->description;
+            }
+    
+            if (!empty($request->hashtags)) {
+                $hashtagIds = [];
+                foreach ($request->hashtags as $field => $value) {
+                    $hashtag = Hashtag::where('name', $value)->first();
+                    if ($hashtag) {
+                        $hashtagIds[] = $hashtag->id;
+                    } else {
+                        $hashtag = new Hashtag();
+                        $hashtag->name = $value;
+                        $hashtag->save();
+                        $hashtagIds[] = $hashtag->id;
+                    }
+                }
+                $video->hashtags()->sync($hashtagIds);
+            }
+    
+            if ($video->save()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Update video successfully',
+                    'user' => $video
+                ], 201);
+            }
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
     }
 }

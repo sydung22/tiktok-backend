@@ -19,6 +19,7 @@ class ReportController extends Controller
         $validator = Validator::make($request->all(), [
             'video_id' => 'required',
             'description' => 'required',
+            'title' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -27,6 +28,7 @@ class ReportController extends Controller
 
         $report = new Report();
         $report->description = $request->description;
+        $report->title = $request->title;
         $report->user_id = auth()->user()->id;
         $report->video_id = $request->video_id;
 

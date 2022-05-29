@@ -65,6 +65,7 @@ Route::group([
     Route::get('/liked', [VideoController::class, 'getVideosLiked']);
     Route::get('{id}', [VideoController::class, 'getVideoDetailById']);
     Route::delete('{id}', [VideoController::class, 'deleteVideo']);
+    Route::put('{id}', [VideoController::class, 'editVideo']);
 });
 
 Route::group([
