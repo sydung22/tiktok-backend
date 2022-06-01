@@ -28,6 +28,7 @@ DB_ROOT_PASSWORD=secret
 ### Run projects
 ```sh
 docker-compose up --build
+docker-compose run --rm composer install
 docker-compose run --rm artisan key:generate
 docker-compose run --rm artisan jwt:secret
 ```
