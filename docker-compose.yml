@@ -44,7 +44,7 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
-      - ./compose/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./compose/mysql/my.cnf:/etc/my.cnf # ./compose/mysql/my.cnf:/etc/mysql/my.cnf
       - dbdata:/var/lib/mysql/
       - ./compose/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
