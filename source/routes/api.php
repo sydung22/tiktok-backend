@@ -55,6 +55,13 @@ Route::prefix('user')->group(function () {
 
 Route::group([
     'middleware' => 'api',
+    'prefix' => 'user'
+], function () {
+    Route::post('/minus-download', [UserController::class, 'minusCoinDownloadVideo']);
+});
+
+Route::group([
+    'middleware' => 'api',
     'prefix' => 'video'
 ], function () {
     Route::post('/store-url', [VideoController::class, 'storeVideoUrl']);

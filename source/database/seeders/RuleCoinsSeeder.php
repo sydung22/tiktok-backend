@@ -53,6 +53,13 @@ class RuleCoinsSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'code' => "DOWNLOAD",
+                'quota' => 1,
+                'amount' => 10,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Report;
 
 class UserController extends Controller
 {
@@ -50,5 +51,27 @@ class UserController extends Controller
             'status' => 'fail',
             'message' => 'Service Error'
         ], 400);
+    }
+
+    public function minusCoinDownloadVideo()
+    {
+        $userId = auth()->user()->id;
+        $report = Report::where('code', 'DOWNLOAD');
+        if (auth()->user() && $userId) {
+            $user = User::find($userId);
+            if ($user->coins < $report->amount) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'You do not have enough coins'
+                ], 400);
+            } else {
+                $user->coins = $user->coins - $report->amount;
+                $user->save();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'You have successfully download video'
+                ], 200);
+            }
+        }
     }
 }
