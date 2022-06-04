@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -25,5 +26,39 @@ class AdminController extends Controller
                 'top_users_most_follows' => $top_users_most_follows,
             ],
         ], 200);
+    }
+
+    public function createUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|between:2,100',
+            'email' => 'required|string|email|max:100|unique:users',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'errors' => $validator->errors()], 400);
+        }
+
+        $user = new User();
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->fullname = $request->fullname;
+        $user->age = $request->age;
+        $user->gender = $request->gender;
+        $user->password = bcrypt($request->password);
+        $user->role = $request->role;
+        if ($user->save()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User successfully registered',
+                'user' => $user
+            ], 201);
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
     }
 }

@@ -125,4 +125,5 @@ Route::prefix('search')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'getStatistics']);
+    Route::post('/user', [AdminController::class, 'createUser']);
 });

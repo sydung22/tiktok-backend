@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Report;
+use App\Models\User;
+use App\Models\Video;
+use App\Mail\ReportMail;
+use Illuminate\Support\Facades\Mail;
 
 class ReportController extends Controller
 {
@@ -32,7 +36,12 @@ class ReportController extends Controller
         $report->user_id = auth()->user()->id;
         $report->video_id = $request->video_id;
 
+        $user = User::find(auth()->user()->id)->first();
+        $admin = User::where('role', 1)->first();
+
         if ($report->save()) {
+            Mail::to($admin->email)->send(new ReportMail($request->title, $request->description, $request->video_id, $user->email));
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Create report successfully',
