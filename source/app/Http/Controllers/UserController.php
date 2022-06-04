@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Report;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -56,7 +57,7 @@ class UserController extends Controller
     public function minusCoinDownloadVideo()
     {
         $userId = auth()->user()->id;
-        $report = Report::where('code', 'DOWNLOAD')->first();
+        $report = DB::table('rule_coins')->where('code', 'DOWNLOAD')->first();
         if (auth()->user() && $userId) {
             $user = User::find($userId);
             if ($user->coins < $report->amount) {
