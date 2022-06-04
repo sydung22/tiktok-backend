@@ -56,7 +56,7 @@ class UserController extends Controller
     public function minusCoinDownloadVideo()
     {
         $userId = auth()->user()->id;
-        $report = Report::where('code', 'DOWNLOAD');
+        $report = Report::where('code', 'DOWNLOAD')->first();
         if (auth()->user() && $userId) {
             $user = User::find($userId);
             if ($user->coins < $report->amount) {
