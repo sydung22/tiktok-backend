@@ -125,5 +125,11 @@ Route::prefix('search')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'getStatistics']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'admin'
+], function () {
     Route::post('/user', [AdminController::class, 'createUser']);
 });
