@@ -51,8 +51,7 @@ class HashtagController extends Controller
 
     public function deleteHashtag($id)
     {
-        $user = auth()->user();
-        if ($user->role) {
+        if (auth()->user() && auth()->user()->role === 1) {
             $hashtag = Hashtag::find($id);
             if ($hashtag->delete() && $hashtag->videos()->detach()) {
                 return response()->json([
