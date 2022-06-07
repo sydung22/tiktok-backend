@@ -16,6 +16,7 @@ return new class extends Migration {
             //
             $table->string('type', 20)->default('PRIVATE');
             $table->integer('share_user_id')->nullable();
+            $table->string('share_description')->nullable();
         });
     }
 
@@ -30,6 +31,7 @@ return new class extends Migration {
             //
             $table->dropColumn('type');
             $table->dropColumn('share_user_id');
+            $table->dropColumn('share_description');
         });
     }
 };

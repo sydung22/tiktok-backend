@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
     use HasFactory;
-    protected $fillable = ['url', 'cover', 'description', 'views', 'user_id', 'type', 'share_user_id'];
+    protected $fillable = ['url', 'cover', 'description', 'views', 'user_id', 'type', 'share_user_id', 'share_description'];
 
     protected $with = ['user', 'hashtags', 'comments', 'likes'];
     protected $withCount = ['likes'];

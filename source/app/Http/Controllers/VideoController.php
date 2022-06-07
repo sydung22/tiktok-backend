@@ -268,8 +268,17 @@ class VideoController extends Controller
             $videoShare = new Video;
             $videoShare->url = $video->url;
             $videoShare->cover = $video->cover;
-            $videoShare->description = $request->description ?? '';
+            $videoShare->description = $video->description;
             $videoShare->user_id = $video->user_id;
+            
+            $videoShareHashtagIds = [];
+            foreach ($video->hashtags as $field => $value) {
+                $hashtag = Hashtag::where('name', $value)->first();
+                $videoShareHashtagIds[] = $hashtag->id;
+            }
+            $videoShare->hashtags()->sync($videoShareHashtagIds);
+
+            $videoShare->share_description = $request->description;
             $videoShare->type = 'SHARE';
             $videoShare->share_user_id = auth()->user()->id;
     
