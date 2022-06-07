@@ -13,7 +13,7 @@ class VideoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['getAllVideos', 'getVideoDetailById', 'getVideosByParams', 'storeVideoUrl']]);
+        $this->middleware('auth:api', ['except' => ['getAllVideos', 'getVideoDetailById', 'getVideosByParams', 'storeVideoUrl', 'getVideoShareOfUser']]);
     }
 
     //
@@ -302,5 +302,18 @@ class VideoController extends Controller
             'status' => 'fail',
             'message' => 'Service Error'
         ], 400);
+    }
+
+    public function getVideoShareOfUser($id)
+    {
+        $videos = Video::where([
+            ['share_user_id', $id],
+            ['type', 'SHARE']
+        ])->get();
+
+        return response()->json([
+            'status' => 'success',
+            'videos' => count($videos) > 0 ? $videos : []
+        ], 200);
     }
 }
