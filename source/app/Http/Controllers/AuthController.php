@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
@@ -37,11 +38,18 @@ class AuthController extends Controller
             return response()->json(['status' => 'fail', 'errors' => $validator->errors()], 422);
         }
 
-        if (! $token = auth()->attempt($validator->validated())) {
+        try {
+            if (!$token = auth()->attempt($validator->validated())) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => 'Unauthorized'
+                ], 401);
+            }
+        } catch (JWTException $e) {
             return response()->json([
                 'status' => 'fail',
-                'message' => 'Unauthorized',
-            ], 401);
+                'message' => $e->getMessage(),
+            ], 500);
         }
 
         return $this->createNewToken($token);
