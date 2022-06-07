@@ -280,23 +280,22 @@ class VideoController extends Controller
             $videoShare->user_id = $video->user_id;
             
             $videoShareHashtagIds = [];
+
             foreach ($video->hashtags as $field => $value) {
-                $hashtag = Hashtag::where('name', $value)->first();
-                $videoShareHashtagIds[] = $hashtag->id;
+                $videoShareHashtagIds[] = $value->id;
             }
-            $videoShare->hashtags()->sync($videoShareHashtagIds);
 
             $videoShare->share_description = $request->share_description;
             $videoShare->type = 'SHARE';
             $videoShare->share_user_id = auth()->user()->id;
-    
-            if ($videoShare->save()) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Share video successfully',
-                    'video' => $videoShare
-                ], 200);
-            }
+            $videoShare->save();
+            $videoShare->hashtags()->sync($videoShareHashtagIds);
+            
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Share video successfully',
+                'video' => $videoShare
+            ], 200);
         }
 
         return response()->json([
