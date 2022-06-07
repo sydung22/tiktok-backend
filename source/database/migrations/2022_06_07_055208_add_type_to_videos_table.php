@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::table('videos', function (Blueprint $table) {
             //
-            $table->string('type', 20)->default('PRIVATE');
+            $table->string('type', 20)->default('PUBLIC');
             $table->integer('share_user_id')->nullable();
             $table->string('share_description')->nullable();
         });
