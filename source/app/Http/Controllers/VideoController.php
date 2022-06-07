@@ -126,7 +126,7 @@ class VideoController extends Controller
         }
 
         if ($type) {
-            $videos = Video::where('type', $type)->orderBy('createdAt', 'desc')->get();
+            $videos = Video::where('type', $type)->orderBy('created_at', 'desc')->get();
         }
        
         return response()->json([
