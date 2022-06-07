@@ -228,6 +228,14 @@ class VideoController extends Controller
             if (!empty($request->description)) {
                 $video->description = $request->description;
             }
+
+            if (!empty($request->type)) {
+                $video->type = $request->type;
+            }
+
+            if ($request->type === 'SHARE' && !empty($request->share_description)) {
+                $video->share_description = $request->share_description;
+            }
     
             if (!empty($request->hashtags)) {
                 $hashtagIds = [];
@@ -278,7 +286,7 @@ class VideoController extends Controller
             }
             $videoShare->hashtags()->sync($videoShareHashtagIds);
 
-            $videoShare->share_description = $request->description;
+            $videoShare->share_description = $request->share_description;
             $videoShare->type = 'SHARE';
             $videoShare->share_user_id = auth()->user()->id;
     
