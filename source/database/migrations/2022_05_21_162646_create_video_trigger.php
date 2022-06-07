@@ -24,7 +24,11 @@ return new class extends Migration {
                         SELECT amount, quota INTO v_amount, v_quota FROM rule_coins where code = 'UPLOAD';
                         IF v_cv != 0 THEN
                             IF v_cv % v_quota = 0 THEN
-                                UPDATE users SET coins = coins + v_amount WHERE id = v_user_id;
+                                IF NEW.type = 'SHARE' THEN
+                                    UPDATE users SET coins = coins + v_amount WHERE id = NEW.share_user_id;
+                                ELSE
+                                    UPDATE users SET coins = coins + v_amount WHERE id = v_user_id;
+                                END IF;
                             END IF;
                         END IF;
                         END");

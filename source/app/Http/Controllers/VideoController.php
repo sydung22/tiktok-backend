@@ -272,7 +272,7 @@ class VideoController extends Controller
     {
         $video = Video::find($id);
 
-        if (auth()->user() && auth()->user()->id !== $video->user_id) {
+        if (auth()->user()) {
             $videoShare = new Video;
             $videoShare->url = $video->url;
             $videoShare->cover = $video->cover;
