@@ -25,6 +25,7 @@ class VideoSeeder extends Seeder
                 'url' => 'https://res.cloudinary.com/dswt194ko/video/upload/v1651981448/videoUser/video_2_onsyif.mp4',
                 'cover' => 'https://via.placeholder.com/150x150/'.substr(md5(rand()), 0, 6),
                 'description' => Str::random(20),
+                'type' => ['PUBLIC', 'PRIVATE', 'SHARE'][mt_rand(0, 2)],
             ]);
             $video->hashtags()->syncWithoutDetaching($hashtags);
         }

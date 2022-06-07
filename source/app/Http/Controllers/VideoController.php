@@ -34,6 +34,9 @@ class VideoController extends Controller
         $video->cover = $request->video_cover_url;
         $video->user_id = auth()->user()->id;
 
+        if (!empty($request->type)) {
+            $video->type = $request->type;
+        }
         
         if (!empty($request->description)) {
             $video->description = $request->description;
@@ -108,6 +111,7 @@ class VideoController extends Controller
     {
         $userId = $request->input('user_id');
         $hashtags = $request->input('hashtag');
+        $type = $request->input('type');
 
         $videos = [];
 
@@ -119,6 +123,10 @@ class VideoController extends Controller
             $videos = Video::whereHas('hashtags', function ($query) use ($hashtags) {
                 $query->whereIn('hashtags.id', $hashtags);
             })->get();
+        }
+
+        if ($type) {
+            $videos = Video::where('type', $type)->get();
         }
        
         return response()->json([
@@ -241,8 +249,36 @@ class VideoController extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Update video successfully',
-                    'user' => $video
+                    'video' => $video
                 ], 201);
+            }
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
+    }
+
+    public function shareVideo($id, Request $request)
+    {
+        $video = Video::find($id);
+
+        if (auth()->user() && auth()->user()->id !== $video->user_id) {
+            $videoShare = new Video;
+            $videoShare->url = $video->url;
+            $videoShare->cover = $video->cover;
+            $videoShare->description = $request->description ?? '';
+            $videoShare->user_id = $video->user_id;
+            $videoShare->type = 'SHARE';
+            $videoShare->share_user_id = auth()->user()->id;
+    
+            if ($videoShare->save()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Share video successfully',
+                    'video' => $videoShare
+                ], 200);
             }
         }
 

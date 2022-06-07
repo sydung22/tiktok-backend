@@ -70,6 +70,7 @@ Route::group([
     Route::get('/', [VideoController::class, 'getAllVideos']);
     Route::get('/params', [VideoController::class, 'getVideosByParams']);
     Route::get('/liked', [VideoController::class, 'getVideosLiked']);
+    Route::post('{id}/share', [VideoController::class, 'shareVideo']);
     Route::get('{id}', [VideoController::class, 'getVideoDetailById']);
     Route::delete('{id}', [VideoController::class, 'deleteVideo']);
     Route::put('{id}', [VideoController::class, 'editVideo']);
