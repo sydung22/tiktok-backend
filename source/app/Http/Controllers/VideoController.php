@@ -278,6 +278,7 @@ class VideoController extends Controller
             $videoShare->cover = $video->cover;
             $videoShare->description = $video->description;
             $videoShare->user_id = $video->user_id;
+            $videoShare->share_video_id = $video->id;
             
             $videoShareHashtagIds = [];
 

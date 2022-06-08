@@ -28,6 +28,7 @@ class VideoSeeder extends Seeder
                 'type' => ['PUBLIC', 'PRIVATE', 'SHARE'][mt_rand(0, 2)],
             ]);
             $video->share_user_id = $video->type === 'SHARE' ? mt_rand(1, 10) : null;
+            $video->share_video_id = $video->type === 'SHARE' ? mt_rand(1, 10) : null;
             $video->save();
             $video->hashtags()->syncWithoutDetaching($hashtags);
         }
