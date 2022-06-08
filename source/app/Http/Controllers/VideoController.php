@@ -182,7 +182,7 @@ class VideoController extends Controller
                     'status' => 'success',
                     'message' => 'Deleted video successfully',
                 ], 200);
-            } elseif (auth()->user()->id == $video->user_id) {
+            } elseif (auth()->user()->id == $video->user_id || auth()->user()->id == $video->share_user_id) {
                 $video->delete();
                 return response()->json([
                     'status' => 'success',
