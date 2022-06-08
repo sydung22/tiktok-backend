@@ -216,49 +216,56 @@ class VideoController extends Controller
 
         $video = Video::find($id);
 
-        if (auth()->user() && auth()->user()->id === $video->user_id) {
-            if (!empty($request->video_url)) {
-                $video->url = $request->video_url;
-            }
-            
-            if (!empty($request->video_cover_url)) {
-                $video->cover = $request->video_cover_url;
-            }
-    
-            if (!empty($request->description)) {
-                $video->description = $request->description;
-            }
-
-            if (!empty($request->type)) {
-                $video->type = $request->type;
-            }
-
-            if ($request->type === 'SHARE' && !empty($request->share_description)) {
-                $video->share_description = $request->share_description;
-            }
-    
-            if (!empty($request->hashtags)) {
-                $hashtagIds = [];
-                foreach ($request->hashtags as $field => $value) {
-                    $hashtag = Hashtag::where('name', $value)->first();
-                    if ($hashtag) {
-                        $hashtagIds[] = $hashtag->id;
-                    } else {
-                        $hashtag = new Hashtag();
-                        $hashtag->name = $value;
-                        $hashtag->save();
-                        $hashtagIds[] = $hashtag->id;
-                    }
+        if (auth()->user()) {
+            if (auth()->user()->id === $video->user_id || auth()->user()->id === $video->share_user_id) {
+                if (!empty($request->video_url)) {
+                    $video->url = $request->video_url;
                 }
-                $video->hashtags()->sync($hashtagIds);
-            }
+                
+                if (!empty($request->video_cover_url)) {
+                    $video->cover = $request->video_cover_url;
+                }
+        
+                if (!empty($request->description)) {
+                    $video->description = $request->description;
+                }
     
-            if ($video->save()) {
+                if (!empty($request->type)) {
+                    $video->type = $request->type;
+                }
+    
+                if ($request->type === 'SHARE' && !empty($request->share_description)) {
+                    $video->share_description = $request->share_description;
+                }
+        
+                if (!empty($request->hashtags)) {
+                    $hashtagIds = [];
+                    foreach ($request->hashtags as $field => $value) {
+                        $hashtag = Hashtag::where('name', $value)->first();
+                        if ($hashtag) {
+                            $hashtagIds[] = $hashtag->id;
+                        } else {
+                            $hashtag = new Hashtag();
+                            $hashtag->name = $value;
+                            $hashtag->save();
+                            $hashtagIds[] = $hashtag->id;
+                        }
+                    }
+                    $video->hashtags()->sync($hashtagIds);
+                }
+        
+                if ($video->save()) {
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Update video successfully',
+                        'video' => $video
+                    ], 201);
+                }
+            } else {
                 return response()->json([
-                    'status' => 'success',
-                    'message' => 'Update video successfully',
-                    'video' => $video
-                ], 201);
+                    'status' => 'fail',
+                    'message' => 'You are not authorized to edit this video'
+                ], 400);
             }
         }
 
