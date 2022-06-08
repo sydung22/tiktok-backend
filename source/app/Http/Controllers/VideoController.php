@@ -234,7 +234,7 @@ class VideoController extends Controller
                     $video->type = $request->type;
                 }
     
-                if ($request->type === 'SHARE' && !empty($request->share_description)) {
+                if ($video->type === 'SHARE' && !empty($request->share_description)) {
                     $video->share_description = $request->share_description;
                 }
         
