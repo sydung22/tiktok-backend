@@ -113,6 +113,7 @@ Route::group([
 ], function () {
     Route::post('/', [ReportController::class, 'reportVideo']);
     Route::get('/', [ReportController::class, 'getReports']);
+    Route::delete('{id}', [ReportController::class, 'deleteReport']);
 });
 
 Route::prefix('hashtag')->group(function () {

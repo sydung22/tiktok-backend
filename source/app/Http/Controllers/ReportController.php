@@ -70,4 +70,22 @@ class ReportController extends Controller
             'message' => 'Service Error'
         ], 400);
     }
+
+    public function deleteReport($id)
+    {
+        if (auth()->user() && auth()->user()->role == 1) {
+            $report = Report::find($id);
+            if ($report->delete()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Delete report successfully'
+                ], 200);
+            }
+        }
+
+        return response()->json([
+            'status' => 'fail',
+            'message' => 'Service Error'
+        ], 400);
+    }
 }
