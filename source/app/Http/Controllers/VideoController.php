@@ -174,16 +174,24 @@ class VideoController extends Controller
     public function deleteVideo($id)
     {
         $video = Video::find($id);
+        $videos = Video::where('share_video_id', $id);
+
         if (auth()->user()) {
-            if (auth()->user()->role === 1 && auth()->user()->id !== $video->user_id) {
+            if (auth()->user()->role === 1) {
                 $video->delete();
                 DB::select("CALL handle_video_report_delete_action('REPORT', ?)", [$video->user_id]);
+
+                $videos->delete();
+
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Deleted video successfully',
                 ], 200);
             } elseif (auth()->user()->id == $video->user_id || auth()->user()->id == $video->share_user_id) {
                 $video->delete();
+
+                $videos->delete();
+
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Deleted video successfully',
