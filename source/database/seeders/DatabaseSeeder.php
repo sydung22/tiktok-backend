@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             LikeSeeder::class,
             CommentSeeder::class,
             ReplySeeder::class,
+            HashTagVideoSeeder::class,
         ]);
     }
 }
