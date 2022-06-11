@@ -4,11 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Follow;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class FollowSeeder extends Seeder
+class HashtagSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,107 +16,94 @@ class FollowSeeder extends Seeder
      */
     public function run()
     {
-        //
-        // for ($i = 0; $i < 10; $i++) {
-        //     Follow::query()->create([
-        //         'user_id_1' => mt_rand(1, 10),
-        //         'user_id_2' => mt_rand(1, 10),
-        //     ]);
-        // }
-        DB::table('follows')->insert([
+        DB::table('hashtags')->insert([
             [
-                'user_id_1' => 5,
-                'user_id_2' => 6,
+                'name' => 'ute',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 7,
-                'user_id_2' => 3,
+                'name' => 'spkt',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 6,
-                'user_id_2' => 1,
+                'name' => 'thanhlap',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 9,
-                'user_id_2' => 3,
+                'name' => 'tuyensinh',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 7,
-                'user_id_2' => 5,
+                'name' => 'xettuyen',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 7,
-                'user_id_2' => 2,
+                'name' => 'lehoi',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 5,
-                'user_id_2' => 3,
+                'name' => 'vekythuat',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 3,
-                'user_id_2' => 8,
+                'name' => 'duaxe',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 10,
-                'user_id_2' => 4,
+                'name' => 'satkhuan',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 3,
-                'user_id_2' => 5,
+                'name' => 'covid',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 1,
-                'user_id_2' => 8,
+                'name' => 'hoahoc',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 1,
-                'user_id_2' => 6,
+                'name' => 'danang',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 1,
-                'user_id_2' => 4,
+                'name' => 'daihoc',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 1,
-                'user_id_2' => 3,
+                'name' => 'sinhvien',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 1,
-                'user_id_2' => 2,
+                'name' => 'due',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
             [
-                'user_id_1' => 1,
-                'user_id_2' => 7,
+                'name' => 'hoakhoi',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'totnghiep',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'tdtt',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

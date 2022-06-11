@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->integer('age');
             $table->string('gender', 20);
-            $table->string('avatar')->default('https://res.cloudinary.com/dswt194ko/image/upload/v1653585639/imageUser/ymkiylplmquaphd6nrxq.jpg');
+            $table->string('avatar')->default('https://res.cloudinary.com/dswt194ko/image/upload/v1654941498/logo-ute_j2d7ah.png?fbclid=IwAR2v_bhN_Kc-AmTUdHRz5q0FEZJTCAM1WBq3Dnxw0NXU-o4ZbGYY_HYx_3A');
             $table->string('description')->nullable();
             $table->string('facebook')->nullable();
             $table->integer('role')->default(0);
