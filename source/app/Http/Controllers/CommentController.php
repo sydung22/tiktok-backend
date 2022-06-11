@@ -57,6 +57,7 @@ class CommentController extends Controller
         $comment = Comment::find($id);
         if (auth()->user() && auth()->user()->id === $comment->user_id) {
             $comment->delete();
+            $comment->replies()->delete();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Delete comment successfully'
