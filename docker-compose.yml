@@ -18,16 +18,32 @@ services:
       dockerfile: ./compose/nginx/Dockerfile
     container_name: nginx
     ports:
-      - "8080:80"
+      - "80:80"
       # Port for xdebug (ensure this matches the remote_port in the xdebug.ini)
       - "9001:9001"
+      - "443:443"
+    restart: always
     volumes:
       - ./source:/var/www/html:delegated
+      - ./compose/nginx/certbot/conf:/etc/letsencrypt
+      - ./compose/nginx/certbot/www:/var/www/certbot
     depends_on:
       - php
       - mysql
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     networks:
       - laravel
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    command: certonly --cert-name utenew.tk --webroot -w /var/www/ -d "utenew.tk" --keep
+    volumes:
+      - ./compose/nginx/certbot/conf:/etc/letsencrypt
+      - ./compose/nginx/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    depends_on:
+      - nginx
 
   mysql:
     image: mysql:5.7.38
