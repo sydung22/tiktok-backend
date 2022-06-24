@@ -24,7 +24,6 @@ services:
       - "443:443"
     restart: always
     volumes:
-      - ./source:/var/www/html:delegated
       - ./compose/nginx/certbot/conf:/etc/letsencrypt
       - ./compose/nginx/certbot/www:/var/www/certbot
     depends_on:
@@ -37,13 +36,10 @@ services:
   certbot:
     container_name: certbot
     image: certbot/certbot:latest
-    command: certonly --webroot --webroot-path=/var/www/certbot/ --email hoanganh36.work@gmail.com --agree-tos --no-eff-email --force-renewal -d utenew.tk
     volumes:
       - ./compose/nginx/certbot/conf:/etc/letsencrypt
       - ./compose/nginx/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    depends_on:
-      - nginx
 
   mysql:
     image: mysql:5.7.38
