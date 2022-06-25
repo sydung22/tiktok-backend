@@ -40,3 +40,9 @@ docker-compose run --rm artisan migrate --seed
 
 ### Docs postman api
 https://documenter.getpostman.com/view/13861728/UyxnD4nA
+
+### Deploy to AWS
+- Buy AWS EC2 and create instance config settings port ( 80, 443)
+- Install certbot to get https for domain ( run docker-compose build -> run init-letsencrypt.sh )
+- Point public ipv4 to DNS
+- Create Elastic IP to static ( because after shutdown or change server -> public ipv4 to change )
