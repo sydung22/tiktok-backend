@@ -234,7 +234,7 @@ class VideoSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'cover' => 'hthttps://res.cloudinary.com/dswt194ko/image/upload/v1654950793/imageUser/cdz2zfunkdukdv5xjtuu.png',
+                'cover' => 'https://res.cloudinary.com/dswt194ko/image/upload/v1654950793/imageUser/cdz2zfunkdukdv5xjtuu.png',
                 'url' => 'https://res.cloudinary.com/dswt194ko/video/upload/v1654950780/ufpyt1gunsz3ezl8wrnn.mp4',
                 'description' => 'Máy sát khuẩn tự động của trường ĐHSPKT',
                 'user_id' => 6,

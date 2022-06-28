@@ -46,3 +46,4 @@ https://documenter.getpostman.com/view/13861728/UyxnD4nA
 - Install certbot to get https for domain ( run docker-compose build -> run init-letsencrypt.sh )
 - Point public ipv4 to DNS
 - Create Elastic IP to static ( because after shutdown or change server -> public ipv4 to change )
+- Disabled firewall
