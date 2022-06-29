@@ -184,8 +184,6 @@ class AuthController extends Controller
             'age' => 'integer',
             'gender' => 'string',
             'avatar' => 'string',
-            'description' => 'string',
-            'facebook' => 'string'
         ]);
 
         if ($validator->fails()) {
